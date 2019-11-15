@@ -37,7 +37,7 @@ exports.signup = async (req, res) => {
     if (err) {
       return res.status(500).send(err.message);
     }
-    res.json(user);
+    res.json(user.name);
   })
 };
 
@@ -68,4 +68,9 @@ exports.signout = (req, res) => {
   res.json({ message: "You are now signed out!" })
 };
 
-exports.checkAuth = () => {};
+exports.checkAuth = (req, res, next) => {
+  if(req.isAuthenticated()) { // This is given to us by default
+    return next(); // IF they are signed in we wont to move on to the next route which is in index.js on routes on uploadAvatar
+  }
+  res.redirect('/signin'); // Otherwise we will redirect to the signin page
+};

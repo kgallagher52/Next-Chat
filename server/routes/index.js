@@ -98,7 +98,7 @@ router.delete(
 
 router.post(
   "/api/posts/new/:userId",
-  authController.checkAuth,
+  authController.checkAuth, // Run as middleware to check if a user is signed in
   postController.uploadImage,
   catchErrors(postController.resizeImage),
   catchErrors(postController.addPost)
