@@ -23,6 +23,7 @@
   5. Node
   6. MaterilUI
   7. Heroku
+  8. Postman
 
 ## Default .env
   ```

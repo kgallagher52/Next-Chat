@@ -28,7 +28,6 @@ const mongooseOptions = {
   useCreateIndex: true,
   useFindAndModify: false
 };
-
 mongoose
   .connect(
     process.env.MONGO_URI,
@@ -66,7 +65,7 @@ app.prepare().then(() => {
 
   const MongoStore = mongoSessionStore(session); // Connecting to the database
   const sessionConfig = {
-    name: "next-connect.sid",
+    name: "next-chat.sid",
     // secret used for using signed cookies w/ the session
     secret: process.env.SESSION_SECRET,
     store: new MongoStore({

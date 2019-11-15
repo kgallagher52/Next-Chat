@@ -28,7 +28,7 @@ class MyApp extends App {
     return (
       <Container>
         <Head>
-          <title>NextConnect</title>
+          <title>Next Chat</title>
         </Head>
         {/* Wrap every page in Jss and Theme providers */}
         <JssProvider
