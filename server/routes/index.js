@@ -43,7 +43,7 @@ router// Router methods
 router.get("/api/users", userController.getUsers);
 router.get(
   "/api/users/profile/:userId",
-  catchErrors(userController.getUserProfile)
+  userController.getUserProfile //Dont need catchErrors because we are adding to our get userProfile in getUserById
 );
 router.get(
   "/api/users/feed/:userId",
