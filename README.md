@@ -1,5 +1,5 @@
 # Next-Chat
-  This application is a fun application showing the full use of Next.JS with an express server with full authentication using passport & mongoDB database. 
+  This application is a fun application showing the full use of Next.JS with an express server with full authentication using passport & mongoDB database credit. 
   Live Site: https://fullstack-next-chat.herokuapp.com/
 
 
@@ -35,5 +35,6 @@
   ```
 ### Sources
 
-    1. https://www.udemy.com/course/universal-react-with-nextjs-the-ultimate-guide/learn/lecture/12505212#overview
-    2. Mlab (mlab.com)
+    1. Credit: https://github.com/reedbarger/next-connect
+    2. https://www.udemy.com/course/universal-react-with-nextjs-the-ultimate-guide/learn/lecture/12505212#overview
+    3. Mlab (mlab.com)
