@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const passport = require('passport'); // For authentication
 
 exports.validateSignup = (req, res, next) => {
   //1.Sanatize the inputs to ensure the user is not sending over something melicious
@@ -40,7 +41,25 @@ exports.signup = async (req, res) => {
   })
 };
 
-exports.signin = () => {};
+exports.signin = (req, res, next) => {
+  //local = is the stratagy we are using such as google or github etc...
+  passport.authenticate('local', (err, user, info ) => {
+    if(err) {
+      return res.status(500).json(err.messsage)
+    }
+    if(!user) {
+      return res.status(400).json(info.message)
+    }
+    // If there is a user we will have this login fuction on our request
+    req.logIn(user, err => {
+      if(err) {
+        return res.status(500).json(err.message)
+      }
+      res.json(user)
+    })
+  })(req, res, next) // In order for us to provide the req and res in the inner function we need to make sure we call it from what we have from signin 
+
+};
 
 exports.signout = () => {};
 
