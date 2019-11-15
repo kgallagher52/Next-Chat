@@ -61,6 +61,11 @@ exports.signin = (req, res, next) => {
 
 };
 
-exports.signout = () => {};
+exports.signout = (req, res) => {
+  //Clear out the session token that matches our current session
+  res.clearCookie("next-cookie.sid") // This is the cookie name we created in are session config
+  req.logout()
+  res.json({ message: "You are now signed out!" })
+};
 
 exports.checkAuth = () => {};
