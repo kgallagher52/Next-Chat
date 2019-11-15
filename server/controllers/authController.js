@@ -32,7 +32,7 @@ exports.signup = async (req, res) => {
   //Using the User model we brought in
   const user = await new User({name, email, password});
   //Passport 1. hash password 2.Turn into long crypted string 3. wont save password just hash 4. Automatically call .save() for us
-  await user.register(user, password, (err, user) => {
+  await User.register(user, password, (err, user) => {
     if (err) {
       return res.status(500).send(err.message);
     }
