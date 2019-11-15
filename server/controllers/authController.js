@@ -8,18 +8,18 @@ exports.validateSignup = (req, res, next) => {
   req.sanitizeBody('name')
   req.sanitizeBody('email')
   req.sanitizeBody('password')
-   
-   //Conditions check if the name is !null & is 10 charachters
+
+  //Conditions check if the name is !null & is 10 charachters
   req.checkBody('name', 'Enter a name').notEmpty();
-  req.checkBody('name', 'Name must be between 4 & 10 characters').isLength({min:4, max:10})
-  req.checkBody('password', 'password must be between 4 & 10 characters').isLength({min:4, max:10})
+  req.checkBody('name', 'Name must be between 4 & 10 characters').isLength({ min: 4, max: 10 })
+  req.checkBody('password', 'password must be between 4 & 10 characters').isLength({ min: 4, max: 10 })
 
   //Email us !null & valid & normilized
   req.checkBody('email', 'Enter a valid email').isEmail().normalizeEmail()
 
   //req.validationErrors(); will put all of our error into an array
   const errors = req.validationErrors();
-  if(errors) {
+  if (errors) {
     const firstError = errors.map(error => error.msg)[0];
     return res.status(400).send(firstError);
   } else {
@@ -31,7 +31,7 @@ exports.validateSignup = (req, res, next) => {
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
   //Using the User model we brought in
-  const user = await new User({name, email, password});
+  const user = await new User({ name, email, password });
   //Passport 1. hash password 2.Turn into long crypted string 3. wont save password just hash 4. Automatically call .save() for us
   await User.register(user, password, (err, user) => {
     if (err) {
@@ -43,16 +43,16 @@ exports.signup = async (req, res) => {
 
 exports.signin = (req, res, next) => {
   //local = is the stratagy we are using such as google or github etc...
-  passport.authenticate('local', (err, user, info ) => {
-    if(err) {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
       return res.status(500).json(err.messsage)
     }
-    if(!user) {
+    if (!user) {
       return res.status(400).json(info.message)
     }
     // If there is a user we will have this login fuction on our request
     req.logIn(user, err => {
-      if(err) {
+      if (err) {
         return res.status(500).json(err.message)
       }
       res.json(user)
@@ -69,7 +69,7 @@ exports.signout = (req, res) => {
 };
 
 exports.checkAuth = (req, res, next) => {
-  if(req.isAuthenticated()) { // This is given to us by default
+  if (req.isAuthenticated()) { // This is given to us by default
     return next(); // IF they are signed in we wont to move on to the next route which is in index.js on routes on uploadAvatar
   }
   res.redirect('/signin'); // Otherwise we will redirect to the signin page
