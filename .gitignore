@@ -1,0 +1,7 @@
+# Enviorment
+*.env
+.env
+.next
+
+# Node_Modules
+node_modules
