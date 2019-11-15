@@ -7,7 +7,7 @@ const router = express.Router();
 
 /* Error handler for async / await functions */
 const catchErrors = fn => {
-  return function(req, res, next) {
+  return function (req, res, next) {
     return fn(req, res, next).catch(next);
   };
 };
@@ -26,9 +26,10 @@ router.get("/api/auth/signout", authController.signout);
 /**
  * USER ROUTES: /api/users
  */
+//router.param convinence method that allows us to get the user by id from url
 router.param("userId", userController.getUserById);
 
-router
+router// Router methods
   .route("/api/users/:userId")
   .get(userController.getAuthUser)
   .put(
