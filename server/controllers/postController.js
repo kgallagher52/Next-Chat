@@ -98,6 +98,24 @@ exports.toggleLike = async (req, res) => {
     res.json(post);
 };
 
-exports.toggleComment = async (req, res, next) => {
+exports.toggleComment = async (req, res) => {
+    const { comment, postId } = req.body;
+    let operator;
+    let data;
 
+    if (req.url.includes('uncomment')) { //Removing post 
+        operator = "$pull"; // Pull from the comments array
+        data = { _id: comment._id }
+    } else { // Adding post
+        operator = "$push"; // push onto the comments array 
+        data = { text: comment.text, postedBy: req.user._id };
+    }
+    const updatePost = await Post.findOneAndUpdate(
+        { _id: postId },
+        { [operator]: { comments: data } },
+        { new: true }
+        //Populate first argumant path second is the method or data 
+    ).populate('postedBy', '_id name avatar')
+        .populate('comments.postedBy', '_id name avatar')
+    res.json(updatePost);
 };
