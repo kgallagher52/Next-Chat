@@ -26,8 +26,8 @@ exports.getUserById = async (req, res, next, id) => {
 
     //Comparing our two ObjectId's to see if the user matches the currently logged in user
     const profileId = mongoose.Types.ObjectId(req.profile._id)
-
-    if (profileId.equals(req.user._id)) { //Currently authenticated user
+    //Added the req.user so in the case such as a post we don't get errors for not having a profile id
+    if (req.user && profileId.equals(req.user._id)) { //Currently authenticated user
         //Set the user flag to true
         req.isAuthUser = true;
         return next();

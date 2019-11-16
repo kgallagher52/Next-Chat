@@ -103,9 +103,9 @@ router.delete(
 router.post(
   "/api/posts/new/:userId",
   authController.checkAuth, // Run as middleware to check if a user is signed in
-  postController.uploadImage,
-  catchErrors(postController.resizeImage),
-  catchErrors(postController.addPost)
+  postController.uploadImage, //Uploading image if we have one
+  catchErrors(postController.resizeImage), //Resizing if we have one
+  catchErrors(postController.addPost) //Update the post
 );
 router.get("/api/posts/by/:userId", catchErrors(postController.getPostsByUser));
 router.get("/api/posts/feed/:userId", catchErrors(postController.getPostFeed));

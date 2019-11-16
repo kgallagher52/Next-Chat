@@ -1,17 +1,81 @@
-exports.uploadImage = () => {};
+const mongoose = require('mongoose');
+const Post = mongoose.model('Post'); //Using the mongoos singleten to refrence the Post model
+const multer = require('multer'); //For bringing in images
+const jimp = require('jimp'); // For resizing and saving the image to static folder 
 
-exports.resizeImage = () => {};
 
-exports.addPost = () => {};
+//Add a configuration options for the image using multer package
+const imageUploadOptions = {
+    //Specify storage
+    storage: multer.memoryStorage(),
+    //Set a limit to size
+    limits: {
+        // This is in bytes and we want to make it 1mb
+        fileSize: 1024 * 1024 * 1,
+    },
+    //File filter function check the file type
+    fileFilter: (req, file, next) => {
+        //If the file is an image
+        if (file.mimetype.startsWith('image/')) {
+            //To move on we pass in true, the null would be the message we wanted to pass to the next function
+            next(null, true)
+        } else {
+            next(null, false)
+        }
+    }
 
-exports.deletePost = () => {};
+}
 
-exports.getPostById = () => {};
+exports.uploadImage = multer(imageUploadOptions).single('image');
 
-exports.getPostsByUser = () => {};
+exports.resizeImage = async (req, res, next) => {
+    //Multer automatically puts the file on the req.file property
+    if (!req.file) {
+        return next(); // Move on to update user if there is not an avatar
+    }
 
-exports.getPostFeed = () => {};
+    const extension = req.file.mimetype.split('/')[1]; // Get second element
+    req.body.image = `/public/static/uploads/${req.user.name}-${Date.now()}.${extension}`
+    //jimp package brought in
+    const image = await jimp.read(req.file.buffer)
+    //Resize
+    await image.resize(750, jimp.AUTO)
+    //Write to file using realative path
+    await image.write(`./${req.body.image}`)
+    next();
+};
 
-exports.toggleLike = () => {};
+exports.addPost = async (req, res) => {
+    req.body.postedBy = req.user._id;
+    //Call .save to persist it to the DB
+    const post = await new Post(req.body).save();
+    await Post.populate(post, { //Populate grabs the post and makes it show on the ux almost as if you where using websockets
+        path: 'postedBy',
+        select: '_id name avatar' //What we want it to return
+    })
+    res.json(post);
+};
 
-exports.toggleComment = () => {};
+exports.deletePost = async (req, res, next) => {
+
+};
+
+exports.getPostById = async (req, res, next) => {
+
+};
+
+exports.getPostsByUser = async (req, res, next) => {
+
+};
+
+exports.getPostFeed = async (req, res, next) => {
+
+};
+
+exports.toggleLike = async (req, res, next) => {
+
+};
+
+exports.toggleComment = async (req, res, next) => {
+
+};
