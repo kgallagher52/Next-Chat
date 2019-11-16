@@ -64,12 +64,22 @@ exports.getPostById = async (req, res, next) => {
 
 };
 
-exports.getPostsByUser = async (req, res, next) => {
-
+exports.getPostsByUser = async (req, res) => {
+    //Sort if they have multiple doing most recent posts first
+    const posts = await Post.find({ postedBy: req.profile._id }).sort({
+        createdAt: "desc"
+    });
+    res.json(posts);
 };
 
-exports.getPostFeed = async (req, res, next) => {
-
+exports.getPostFeed = async (req, res) => {
+    const { following, _id } = req.profile;
+    //Refer to userFeed if you are confused
+    following.push(_id);
+    const posts = await Post.find({ postedBy: { $in: following } }).sort({
+        createdAt: "desc"
+    })
+    res.json(posts);
 };
 
 exports.toggleLike = async (req, res, next) => {
