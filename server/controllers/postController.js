@@ -82,8 +82,20 @@ exports.getPostFeed = async (req, res) => {
     res.json(posts);
 };
 
-exports.toggleLike = async (req, res, next) => {
+exports.toggleLike = async (req, res) => {
+    const { postId } = req.body;
 
+    const post = await Post.findOne({ _id: postId }); // Get post
+    const likedIds = post.likes.map(id => id.toString()); //Get liked posts and convert to string
+    const authUserId = req.user._id.toString();  //Get othe user posts to string
+
+    if (likedIds.includes(authUserId)) {
+        await post.likes.pull(authUserId);
+    } else {
+        await post.likes.push(authUserId);
+    }
+    await post.save();
+    res.json(post);
 };
 
 exports.toggleComment = async (req, res, next) => {
