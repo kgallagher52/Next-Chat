@@ -48,10 +48,10 @@ router// Router methods
   .route("/api/users/:userId")
   .get(userController.getAuthUser)
   .put(
-    authController.checkAuth,
-    userController.uploadAvatar,
-    catchErrors(userController.resizeAvatar),
-    catchErrors(userController.updateUser)
+    authController.checkAuth, //Check if authenticated
+    userController.uploadAvatar, //Upload avatar if they provide one
+    catchErrors(userController.resizeAvatar), // Resizie the img
+    catchErrors(userController.updateUser) // Update user profile
   )
   .delete(authController.checkAuth, catchErrors(userController.deleteUser));
 
