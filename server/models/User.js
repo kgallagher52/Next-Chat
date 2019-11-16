@@ -37,7 +37,9 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const autoPopulateFollowingAndFollowers = function(next) {
+const autoPopulateFollowingAndFollowers = function (next) {
+  //This turns the followers Id into a object with the _id name and avatar of the users 
+  //Related to the userController follow and unfollow functions
   this.populate("following", "_id name avatar");
   this.populate("followers", "_id name avatar");
   next();

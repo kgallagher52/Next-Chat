@@ -26,8 +26,23 @@ router.get("/api/auth/signout", authController.signout);
 /**
  * USER ROUTES: /api/users
  */
+
 //router.param convinence method that allows us to get the user by id from url
 router.param("userId", userController.getUserById);
+
+router.put( // These routes need to be placed befoer the :userId so that it checks the follow and unfollow
+  "/api/users/follow",
+  authController.checkAuth,
+  catchErrors(userController.addFollowing),
+  catchErrors(userController.addFollower)
+);
+
+router.put(
+  "/api/users/unfollow",
+  authController.checkAuth,
+  catchErrors(userController.deleteFollowing),
+  catchErrors(userController.deleteFollower)
+);
 
 router// Router methods
   .route("/api/users/:userId")
@@ -51,18 +66,6 @@ router.get(
   catchErrors(userController.getUserFeed)
 );
 
-router.put(
-  "/api/users/follow",
-  authController.checkAuth,
-  catchErrors(userController.addFollowing),
-  catchErrors(userController.addFollower)
-);
-router.put(
-  "/api/users/unfollow",
-  authController.checkAuth,
-  catchErrors(userController.deleteFollowing),
-  catchErrors(userController.deleteFollower)
-);
 
 /**
  * POST ROUTES: /api/posts

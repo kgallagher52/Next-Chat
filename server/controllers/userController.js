@@ -61,9 +61,28 @@ exports.deleteUser = async (req, res) => {
     res.json(deletedUser);
 };
 
-exports.addFollowing = () => { };
+exports.addFollowing = async (req, res, next) => {
+    const { followId } = req.body;
+    // The $push allows us to push onto an array just like what we would do with javascript
+    await User.findOneAndUpdate(
+        { _id: req.user._id }, //Get the current user
+        {
+            $push: { following: followId } // Push the follower onto the the following array of the current user
+        }
+    )
+    next(); //Move to addFollower
+};
 
-exports.addFollower = () => { };
+exports.addFollower = async (req, res) => {
+    const { followId } = req.body;
+    const user = await User.findOneAndUpdate(
+        { _id: followId }, //Getting the user following
+        { $push: { followers: req.user._id } }, //Pushing onto the user being followd under the followers array
+        { new: true } //Get the latest records from the DB
+
+    )
+    res.json(user)
+};
 
 exports.deleteFollowing = () => { };
 
