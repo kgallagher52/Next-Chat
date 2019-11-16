@@ -23,7 +23,6 @@ const imageUploadOptions = {
             next(null, false)
         }
     }
-
 }
 
 exports.uploadImage = multer(imageUploadOptions).single('image');
