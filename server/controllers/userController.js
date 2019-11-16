@@ -42,7 +42,16 @@ exports.getUserProfile = (req, res) => {
     res.json(req.profile)
 };
 
-exports.getUserFeed = () => { };
+exports.getUserFeed = async (req, res) => {
+    //We want to only grab users that we are not following and including ourself
+    const { following, _id } = req.profile;
+    //Push our id onto this following so we don't get our profile in the query
+    following.push(_id);
+    //$nin - not in array operator
+    const users = await User.find({ _id: { $nin: following } })
+        .select('_id name avatar')
+    res.json(users);
+};
 
 exports.uploadAvatar = () => { };
 
