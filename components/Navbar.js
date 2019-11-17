@@ -1,21 +1,52 @@
-// import AppBar from "@material-ui/core/AppBar";
-// import Toolbar from "@material-ui/core/Toolbar";
-// import Typography from "@material-ui/core/Typography";
-// import Button from "@material-ui/core/Button";
-// import ShareOutlined from "@material-ui/icons/ShareOutlined";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import ShareOutlined from "@material-ui/icons/ShareOutlined";
 import withStyles from "@material-ui/core/styles/withStyles";
+import color from "@material-ui/core/colors/yellow";
 
-const Navbar = ({ classes }) => {
-  return <div className={classes.appBar}>Navbar</div>;
+const Navbar = ({ classes, router, pageProps:{ auth } }) => {
+  //Grab user
+  const { user = {} } = auth || {};
+
+  return (
+    <AppBar className={classes.appBar} position={router.pathname === '/' ? 'fixed' : 'static'}>
+      <Toolbar>
+        <ShareOutlined className={classes.icon} />
+        <Typography variant="h5" component="h1" className={classes.toolbarTitle}>
+            Next Chat
+        </Typography>
+        {user._id ? (
+          // Auth Navigation
+          <div>
+            <Button className={classes.button}>Profile</Button> 
+            <Button className={classes.button} variant="outlined">Sign Out</Button>
+          </div>
+        ): (
+          // unAuth Navigation
+          <div>
+            <Button className={classes.button}>
+              Sign In
+            </Button>
+            <Button className={classes.button}>
+              Sign Up
+            </Button>
+          </div>
+        )}
+      </Toolbar> 
+    </AppBar>
+  )
 };
 
 const styles = theme => ({
   appBar: {
     // z-index 1 higher than the fixed drawer in home page to clip it under the navigation
-    zIndex: theme.zIndex.drawer + 1
+    zIndex: theme.zIndex.drawer + 1,
+    color:  "#fff"
   },
   toolbarTitle: {
-    flex: 1
+    flex: 1,    
   },
   icon: {
     marginRight: theme.spacing.unit
