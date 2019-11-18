@@ -1,5 +1,4 @@
 import { withRouter } from 'next/router'
-import green from "@material-ui/core/colors/green";
 
 const ActiveLink = ({ router, href, children }) => {
 
