@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ShareOutlined from '@material-ui/icons/ShareOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
-import activeLink from './ActiveLink';
 import ActiveLink from './ActiveLink';
 
 const Navbar = ({ classes, router, pageProps: { auth } }) => {
